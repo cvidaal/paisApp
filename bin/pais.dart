@@ -11,7 +11,14 @@ class Pais {
   String? region;
   String? mapa;
   String? bandera;
+  String? banderaUrl;
   String? nombreOficial;
+
+  get getNombreOficial  {
+    
+  }
+
+ set setNombreOficial( nombreOficial) => this.nombreOficial = nombreOficial;
   String? fifa;
   String? sufijoTlf;
   String? zonaHoraria;
@@ -25,12 +32,15 @@ class Pais {
     nombre = datos[0]['name']['common'];
     capital = datos[0]['capital'][0];
     poblacion = datos[0]['population'];
-
-    for (var elemento in datos[0]['languages']) {
-      //idiomas[elemento] = ;
+    for (var elemento in datos[0]['languages'].keys) {
+      idiomas[elemento] = datos[0]['languages'][elemento];
     }
+    region = datos[0]['region'];
+    mapa = datos[0]['maps']['googleMaps'];
+    bandera = datos[0]['flag'];
+    banderaUrl = datos[0]['flags']['svg'];
+    
 
-    region = datos[0][''];
   }
 
   obtenerPais(String nombre) async {
@@ -53,13 +63,25 @@ class Pais {
 
   //* IMPRIMIR INFORMACIÓN MÉTODO
   imprimirInfo(Pais pais) {
+    stdout.writeln('---------------------------------------');
+    stdout.writeln(pais.nombre.toUpperCase() + ' Información general'.toUpperCase());
+    stdout.writeln('**************************************');
     stdout.writeln('Nombre: ${pais.nombre}');
     stdout.writeln('Capital: ${pais.capital}');
     stdout.writeln('Población: ${pais.poblacion}');
 
     stdout.writeln("Idiomas: ");
     for (var idioma in pais.idiomas.values) {
-      stdout.writeln(" $idioma");
+      stdout.writeln("  $idioma");
     }
+
+    stdout.writeln("Región: ${pais.region}");
+    stdout.writeln('Url GoogleMaps: ${pais.mapa}');
+    stdout.writeln('Bandera: ${pais.bandera}  ${pais.banderaUrl}');
+    stdout.writeln('**************************************');
+  }
+
+  imprimirInfoExtra(Pais pais){
+
   }
 }
