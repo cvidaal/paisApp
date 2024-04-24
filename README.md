@@ -2,6 +2,11 @@
 
 - Aplicación que te pregunte por un país y te ofrezca todos los datos que pidas sobre ese país
 
+    - Crear una base de datos
+        - En la que un usuario introduzca su usuario y contraseña 
+        - Cree un ID para jugar y lo guarde en la base de datos
+        - Almacenar su mejor racha en el ranking
+
     - A Ofrecer Información General
         - Nombre
         - Capital
