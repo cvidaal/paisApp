@@ -9,9 +9,13 @@ class Login {
     //! PEDIR AL USUARIO SI QUIERE REGISTRARSE, INICIAR SESIÓN
     do {
       stdout.writeln('''
-Elige una opción:
-      1 - INICIAR SESIÓN
-      2 - REGISTRARSE
+----------------------------------------------
+          Elige una opción:
+----------------------------------------------
+          1 - INICIAR SESIÓN
+
+          2 - REGISTRARSE
+----------------------------------------------
       ''');
       String respuesta = stdin.readLineSync() ?? 'e';
       opcion = int.tryParse(respuesta);
@@ -34,9 +38,15 @@ Elige una opción:
 
   login() async {
     Usuario usuario = Usuario();
-    stdout.writeln('Nombre Usuario: ');
+    stdout.writeln('''
+----------------------------------------------
+                   LOGIN
+----------------------------------------------
+''');
+    stdout.writeln('USUARIO: ');
     usuario.nombre = stdin.readLineSync();
-    stdout.writeln('Contraseña: ');
+    stdout.writeln('----------------------------------------------');
+    stdout.writeln('CONTRASEÑA: ');
     usuario.password = stdin.readLineSync();
     var resultado = await usuario.loginUsuario();
     if (resultado == false) {
@@ -48,9 +58,14 @@ Elige una opción:
 
   crearUsuario() async {
     Usuario usuario = Usuario();
-    stdout.writeln('Elige un nombre de usuario:');
+    stdout.writeln('''
+----------------------------------------------
+                  REGISTRO
+----------------------------------------------
+''');
+    stdout.writeln('NOMBRE USUARIO:');
     usuario.nombre = stdin.readLineSync();
-    stdout.writeln('Crea una contraseña: ');
+    stdout.writeln('CONTRASEÑA: ');
     usuario.password = stdin.readLineSync();
     await usuario.insertarUsuarios();
     menuLogin();

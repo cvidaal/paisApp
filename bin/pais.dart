@@ -1,6 +1,5 @@
 import "dart:convert";
 import "dart:io";
-
 import "package:http/http.dart" as http;
 
 class Pais {
@@ -13,7 +12,6 @@ class Pais {
   String? bandera;
   String? banderaUrl;
   String? nombreOficial;
-
   String? fifa;
   String? sufijoTlf;
   String? zonaHoraria;
@@ -56,27 +54,26 @@ class Pais {
   }
 
   //* IMPRIMIR INFORMACIÓN MÉTODO
-  imprimirInfo(Pais pais) {
+  imprimirInfo() {
     stdout.writeln('---------------------------------------');
-    stdout.writeln(
-        pais.nombre.toUpperCase() + ' Información general'.toUpperCase());
+    stdout.writeln(nombre.toUpperCase() + ' Información general'.toUpperCase());
     stdout.writeln('**************************************');
-    stdout.writeln('Nombre: ${pais.nombre}');
-    stdout.writeln('Capital: ${pais.capital}');
-    stdout.writeln('Población: ${pais.poblacion}');
+    stdout.writeln('Nombre: $nombre');
+    stdout.writeln('Capital: $capital');
+    stdout.writeln('Población: $poblacion');
 
     stdout.writeln("Idiomas: ");
-    for (var idioma in pais.idiomas.values) {
+    for (var idioma in idiomas.values) {
       stdout.writeln("  $idioma");
     }
 
-    stdout.writeln("Región: ${pais.region}");
-    stdout.writeln('Url GoogleMaps: ${pais.mapa}');
-    stdout.writeln('Bandera: ${pais.bandera}  ${pais.banderaUrl}');
+    stdout.writeln("Región: $region");
+    stdout.writeln('Url GoogleMaps: $mapa');
+    stdout.writeln('Bandera: $bandera}  $banderaUrl');
     stdout.writeln('\n');
   }
 
-  imprimirNombreOfficial(Pais pais) {
-    stdout.writeln('Nombre Oficial: ${pais.nombreOficial}');
+  imprimirNombreOfficial() {
+    stdout.writeln('Nombre Oficial: $nombreOficial');
   }
 }
