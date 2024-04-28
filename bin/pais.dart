@@ -14,8 +14,10 @@ class Pais {
   String? nombreOficial;
   String? fifa;
   String? sufijoTlf;
-  String? zonaHoraria;
-  String? direccionCoche;
+  List zonasHorarias = [];
+  String? direccionConduccion;
+  String? moneda;
+  String? dominio;
   bool? esIndependiente;
 
   //Constructor
@@ -33,6 +35,16 @@ class Pais {
     bandera = datos[0]['flag'];
     banderaUrl = datos[0]['flags']['svg'];
     nombreOficial = datos[0]['name']['official'];
+    fifa = datos[0]['fifa'];
+
+    for (var elemento in datos[0]['timezones']) {
+      zonasHorarias.add(elemento);
+    }
+
+    moneda = datos[0]['currencies']['EUR']['name'];
+
+    esIndependiente = datos[0]['independent'];
+    direccionConduccion = datos[0]['car']['signs']['side'];
   }
 
   obtenerPais(String nombre) async {
@@ -73,7 +85,29 @@ class Pais {
     stdout.writeln('\n');
   }
 
-  imprimirNombreOfficial() {
-    stdout.writeln('Nombre Oficial: $nombreOficial');
+  mostrarNombreOfficial() {
+    stdout.writeln('NOMBRE OFICIAL: $nombreOficial');
+    stdout.writeln('-------------------------------');
+  }
+
+  mostrarSiglasFifa() {
+    stdout.writeln('SIGLAS FIFA: $fifa');
+    stdout.writeln('-------------------------------');
+  }
+
+  mostrarZonaHoraria() {
+    stdout.writeln('ZONA HORARIA: ');
+    for (var zonaHoraria in zonasHorarias) {
+      stdout.writeln("  $zonaHoraria");
+    }
+    stdout.writeln('-------------------------------');
+  }
+
+  mostrarMoneda() {
+    stdout.writeln("MONEDA: $moneda");
+  }
+
+  mostrarIndependiente() {
+    (esIndependiente = true) ? 'Es independiente' : 'No es independiente';
   }
 }

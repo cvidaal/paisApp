@@ -2,6 +2,8 @@ import 'dart:io';
 import 'Pais.dart';
 
 class App {
+  Pais? paisSeleccionado; //Objeto de tipo pais.
+
   inicioApp() async {
     int? seleccion = menuLogueado();
 
@@ -10,7 +12,7 @@ class App {
         informacion();
         break;
       case 2:
-        informacionExtra();
+        seleccionarPais();
         break;
       //Información extra
       case 3:
@@ -25,6 +27,23 @@ class App {
     }
   }
 
+  //TODO METODO PARA SELECCIONAR EL PAIS, QUE PIDE EL NOMBRE.
+  void seleccionarPais() {
+    String respuesta = pedirNombre();
+    obtenerInformacion(respuesta);
+  }
+
+  //TODO METODO PARA OBTENER LA INFORMACIÓN DEL PAÍS Y MOSTRAR LA INFORMACIÓN EXTRA EN CASO DE QUE SEA NULL.
+  obtenerInformacion(String nombre) async {
+    paisSeleccionado = await Pais().obtenerPais(nombre);
+    if (paisSeleccionado != null) {
+      menuExtra(); // Llamar al menú extra después de seleccionar el país
+    } else {
+      stdout.writeln('El país no pudo ser encontrado. Inténtalo de nuevo.');
+    }
+  }
+
+  //TODO METODO CON MENÚ PARA PEDIR EL NOMBRE.
   String pedirNombre() {
     stdout.writeln('''
 ----------------------------------------------
@@ -34,6 +53,7 @@ class App {
     return stdin.readLineSync() ?? "error";
   }
 
+  //TODO  MENU QUE SE MUESTRA CUANDO ESTAS LOGUEADO
   int? menuLogueado() {
     int? opcion;
     do {
@@ -57,68 +77,74 @@ class App {
     return opcion;
   }
 
+  //TODO MENU QUE SE MUESTRA CUANDO MUESTRA LA OPCIÓN 2.
+
   menuExtra() async {
     int? opcion;
-
     do {
       stdout.writeln('''
     ------------------------------
-        2 INFORMACION EXTRA:
+      2 INFORMACION EXTRA: ${paisSeleccionado?.nombre}
     ------------------------------
       1. Nombre Oficial
       2. Siglas FIFA
       3. Zona horaria
-      4. Sufijo de télefono
+      4. Moneda
       5. Sentido de condución
       6. ¿Es independiente?
       7. Salir
 ''');
       opcion = int.tryParse(stdin.readLineSync() ?? 'e');
-      // ignore: unnecessary_null_comparison
-    } while (opcion != 7);
-    return opcion;
-  }
+      switch (opcion) {
+        case 1:
+          nombreExtra();
+          break;
+        case 2:
+          siglasFifa();
+          // SIGLAS FIFA
+          break;
+        case 3:
+          zonaHoraria();
+          // ZONA HORARIA
+          break;
+        case 4:
+          moneda();
+          break;
+        case 5:
+          
+          // DIRECCION CONDUCCIÓN COCHES
+          break;
+        case 6:
 
-  informacionExtra({Pais? pais = null}) async {
-    int? opcion = menuExtra();
-    //Hacer un objeto pais y llamar a menuExtra
-    if (pais == null) {
-      String respuesta = pedirNombre();
-      pais = await Pais().obtenerPais(respuesta);
-    }
-    switch (opcion) {
-      case 1:
-        nombreExtra(pais);
-        //Nombre oficial Pais
-        break;
-      case 2:
-        //Siglas FIFA
-        break;
-      case 3:
-        //Zona horaria
-        break;
-      case 4:
-        //Sufijo de telefono
-        break;
-      case 5:
-        //Direccion de condución de los coches
-        break;
-      case 6:
-        //Es independiente
-        break;
-      case 7:
-        //break;
-        break;
-    }
+          // ES INDEPENDIENTE?
+          break;
+        case 7:
+          break; // Salir del menú extra
+        default:
+          stdout.writeln('Opción inválida.');
+      }
+    } while (opcion != 7);
   }
 
   informacion() async {
     String respuesta = pedirNombre();
-    Pais pais = await Pais().obtenerPais(respuesta);
-    pais.imprimirInfo();
+    paisSeleccionado = await Pais().obtenerPais(respuesta);
+    paisSeleccionado?.imprimirInfo();
   }
 
-  nombreExtra(Pais? pais) async {
-    pais?.imprimirNombreOfficial();
+  nombreExtra() {
+    paisSeleccionado?.mostrarNombreOfficial();
+  }
+
+  siglasFifa() {
+    paisSeleccionado?.mostrarSiglasFifa();
+  }
+
+  zonaHoraria() {
+    paisSeleccionado?.mostrarZonaHoraria();
+  }
+
+  moneda() {
+    paisSeleccionado?.mostrarMoneda();
   }
 }
