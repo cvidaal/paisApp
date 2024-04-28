@@ -9,9 +9,9 @@ class Database {
   // Métodos
   instalacion() async {
     var settings = ConnectionSettings(
-      host: this._host,
-      port: this._port,
-      user: this._user,
+      host: _host,
+      port: _port,
+      user: _user,
     );
 
     // CONEXIÓN A LA BASE DE DATOS PARA CONECTAR
@@ -29,9 +29,9 @@ class Database {
 
   Future<MySqlConnection> conexion() async {
     var settings = ConnectionSettings(
-        host: this._host,
-        port: this._port,
-        user: this._user,
+        host: _host,
+        port: _port,
+        user: _user,
         db: 'usuariosPais');
 
     return await MySqlConnection.connect(settings);

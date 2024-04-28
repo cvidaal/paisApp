@@ -1,5 +1,6 @@
 import "dart:convert";
 import "dart:io";
+import "dart:math";
 import "package:http/http.dart" as http;
 
 class Pais {
@@ -13,9 +14,7 @@ class Pais {
   String? banderaUrl;
   String? nombreOficial;
   String? fifa;
-  String? sufijoTlf;
   List zonasHorarias = [];
-  String? direccionConduccion;
   String? moneda;
   String? dominio;
   bool? esIndependiente;
@@ -44,7 +43,7 @@ class Pais {
     moneda = datos[0]['currencies']['EUR']['name'];
 
     esIndependiente = datos[0]['independent'];
-    direccionConduccion = datos[0]['car']['signs']['side'];
+    dominio = datos[0]['tld'][0];
   }
 
   obtenerPais(String nombre) async {
@@ -108,6 +107,48 @@ class Pais {
   }
 
   mostrarIndependiente() {
-    (esIndependiente = true) ? 'Es independiente' : 'No es independiente';
+    stdout.writeln(
+        'Es independiente: ${esIndependiente == true ? 'Es independiente' : 'No es independiente'}');
   }
+
+  mostrarDominio() {
+    stdout.writeln('DOMINIO: $dominio');
+  }
+
+//TODO JUEGO DE ADIVINAR CAPITALES
+  obtenerPaisRandom() async {
+    Uri url = Uri.parse("https://restcountries.com/v3.1/all");
+    var respuesta = await http.get(url);
+    try {
+      if (respuesta.statusCode == 200) {
+        var body = json.decode(respuesta.body);
+        int paisRandom = Random().nextInt(249);
+        Pais pais = Pais.fromAPI(body[paisRandom]);
+        return pais;
+      } else if (respuesta.statusCode == 404) {
+        throw ("El país no existe, Intentalo de nuevo en Inglés");
+      } else {
+        stdout.writeln('Error de conexión');
+      }
+    } catch (e) {
+      stdout.writeln(e);
+    }
+  }
+}
+
+
+adivinarCapital() async {
+  int aciertos = 0;
+  int intentos = 0;
+  do {
+    stdout.writeln('¿Cuál es la capital de ');
+
+    
+    intentos++;
+  } while (intentos < 3);
+  //Selecciona un país random que es el país que hay que adivinar
+  //2. Le pregunta al jugador con 3 intentos cual es la capital de este pais.
+  //3. Tiene 3 intentos para adivinarlo (bucle do while)
+  //4. Si supera los 3 intentos. falla, sino sigue.
+  //5. Se va añadiendo a un contador el número de racha y aciertos.
 }

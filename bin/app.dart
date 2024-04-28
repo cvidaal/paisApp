@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'Pais.dart';
+import 'pais.dart';
 
 class App {
   Pais? paisSeleccionado; //Objeto de tipo pais.
@@ -16,6 +16,7 @@ class App {
         break;
       //Información extra
       case 3:
+        adivinarCapital();
         //Juego adivinar el país
         break;
       case 4:
@@ -90,7 +91,7 @@ class App {
       2. Siglas FIFA
       3. Zona horaria
       4. Moneda
-      5. Sentido de condución
+      5. Dominio
       6. ¿Es independiente?
       7. Salir
 ''');
@@ -111,11 +112,11 @@ class App {
           moneda();
           break;
         case 5:
-          
-          // DIRECCION CONDUCCIÓN COCHES
+          dominio();
+          // DOMINIO
           break;
         case 6:
-
+          independiente();
           // ES INDEPENDIENTE?
           break;
         case 7:
@@ -146,5 +147,13 @@ class App {
 
   moneda() {
     paisSeleccionado?.mostrarMoneda();
+  }
+
+  independiente() {
+    paisSeleccionado?.mostrarIndependiente();
+  }
+
+  dominio() {
+    paisSeleccionado?.mostrarDominio();
   }
 }
