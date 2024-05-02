@@ -115,6 +115,30 @@ class Pais {
     stdout.writeln('DOMINIO: $dominio');
   }
 
+adivinarCapital() async {
+  int aciertos = 0;
+  int intentos = 1;
+
+  do {
+    Pais pais = await obtenerPaisRandom();
+    stdout.writeln('¿Cuál es la capital de ');
+    // Obtener un país aleatorio
+    stdout.writeln(pais.nombre + '?');
+    // Leer la respuesta del usuario
+    String respuesta = stdin.readLineSync() ?? '';
+    // Verificar si la respuesta es correcta
+    if (respuesta.toLowerCase() == pais.capital?.toLowerCase()) {
+      stdout.writeln('¡Respuesta correcta!');
+      aciertos++;
+    } else {
+      stdout.writeln('Respuesta incorrecta. La capital es ${pais.capital}');
+      intentos++;
+    }
+  } while (intentos <= 3);
+  stdout.writeln('Aciertos: $aciertos');
+}
+
+
 //TODO JUEGO DE ADIVINAR CAPITALES
   obtenerPaisRandom() async {
     Uri url = Uri.parse("https://restcountries.com/v3.1/all");
@@ -122,9 +146,10 @@ class Pais {
     try {
       if (respuesta.statusCode == 200) {
         var body = json.decode(respuesta.body);
-        int paisRandom = Random().nextInt(249);
+        int paisRandom = Random().nextInt(body.length);
         Pais pais = Pais.fromAPI(body[paisRandom]);
         return pais;
+
       } else if (respuesta.statusCode == 404) {
         throw ("El país no existe, Intentalo de nuevo en Inglés");
       } else {
@@ -134,21 +159,4 @@ class Pais {
       stdout.writeln(e);
     }
   }
-}
-
-
-adivinarCapital() async {
-  int aciertos = 0;
-  int intentos = 0;
-  do {
-    stdout.writeln('¿Cuál es la capital de ');
-
-    
-    intentos++;
-  } while (intentos < 3);
-  //Selecciona un país random que es el país que hay que adivinar
-  //2. Le pregunta al jugador con 3 intentos cual es la capital de este pais.
-  //3. Tiene 3 intentos para adivinarlo (bucle do while)
-  //4. Si supera los 3 intentos. falla, sino sigue.
-  //5. Se va añadiendo a un contador el número de racha y aciertos.
 }

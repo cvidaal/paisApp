@@ -16,7 +16,7 @@ class App {
         break;
       //Información extra
       case 3:
-        adivinarCapital();
+        await Pais().adivinarCapital();
         //Juego adivinar el país
         break;
       case 4:
@@ -132,6 +132,7 @@ class App {
     paisSeleccionado = await Pais().obtenerPais(respuesta);
     paisSeleccionado?.imprimirInfo();
   }
+
 
   nombreExtra() {
     paisSeleccionado?.mostrarNombreOfficial();
