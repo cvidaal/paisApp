@@ -16,13 +16,10 @@ class App {
         break;
       //Información extra
       case 3:
-        await Pais().adivinarCapital();
+        Pais().adivinarCapital();
         //Juego adivinar el país
         break;
       case 4:
-        //Juego adivina que país tiene mas población
-        break;
-      case 5:
         exit(0);
       //Switch interno
     }
@@ -67,8 +64,7 @@ class App {
       1 - Información general.
       2 - Información extra.
       3 - Juego adivinar el país
-      4 - Juego que país tiene más población
-      5 - Salir
+      4 - Salir
 ----------------------------------------------
 
 ----------------------------------------------      
@@ -90,10 +86,9 @@ class App {
       1. Nombre Oficial
       2. Siglas FIFA
       3. Zona horaria
-      4. Moneda
-      5. Dominio
-      6. ¿Es independiente?
-      7. Salir
+      4. Dominio
+      5. ¿Es independiente?
+      6. Salir
 ''');
       opcion = int.tryParse(stdin.readLineSync() ?? 'e');
       switch (opcion) {
@@ -109,22 +104,19 @@ class App {
           // ZONA HORARIA
           break;
         case 4:
-          moneda();
-          break;
-        case 5:
           dominio();
           // DOMINIO
           break;
-        case 6:
+        case 5:
           independiente();
           // ES INDEPENDIENTE?
           break;
-        case 7:
+        case 6:
           break; // Salir del menú extra
         default:
           stdout.writeln('Opción inválida.');
       }
-    } while (opcion != 7);
+    } while (opcion != 6);
   }
 
   informacion() async {
@@ -132,7 +124,6 @@ class App {
     paisSeleccionado = await Pais().obtenerPais(respuesta);
     paisSeleccionado?.imprimirInfo();
   }
-
 
   nombreExtra() {
     paisSeleccionado?.mostrarNombreOfficial();
@@ -146,9 +137,9 @@ class App {
     paisSeleccionado?.mostrarZonaHoraria();
   }
 
-  moneda() {
-    paisSeleccionado?.mostrarMoneda();
-  }
+  // moneda() {
+  //   paisSeleccionado?.mostrarMoneda();
+  // }
 
   independiente() {
     paisSeleccionado?.mostrarIndependiente();

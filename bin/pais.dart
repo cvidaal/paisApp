@@ -15,7 +15,6 @@ class Pais {
   String? nombreOficial;
   String? fifa;
   List zonasHorarias = [];
-  String? moneda;
   String? dominio;
   bool? esIndependiente;
 
@@ -23,27 +22,25 @@ class Pais {
   Pais();
   //Acceder a los datos
   Pais.fromAPI(datos) {
-    nombre = datos[0]['name']['common'];
-    capital = datos[0]['capital'][0];
-    poblacion = datos[0]['population'];
-    for (var elemento in datos[0]['languages'].keys) {
-      idiomas[elemento] = datos[0]['languages'][elemento];
+    nombre = datos['name']['common'];
+    capital = datos['capital'][0];
+    poblacion = datos['population'];
+    for (var elemento in datos['languages'].keys) {
+      idiomas[elemento] = datos['languages'][elemento];
     }
-    region = datos[0]['region'];
-    mapa = datos[0]['maps']['googleMaps'];
-    bandera = datos[0]['flag'];
-    banderaUrl = datos[0]['flags']['svg'];
-    nombreOficial = datos[0]['name']['official'];
-    fifa = datos[0]['fifa'];
+    region = datos['region'];
+    mapa = datos['maps']['googleMaps'];
+    bandera = datos['flag'];
+    banderaUrl = datos['flags']['svg'];
+    nombreOficial = datos['name']['official'];
+    fifa = datos['fifa'];
 
-    for (var elemento in datos[0]['timezones']) {
+    for (var elemento in datos['timezones']) {
       zonasHorarias.add(elemento);
     }
 
-    moneda = datos[0]['currencies']['EUR']['name'];
-
-    esIndependiente = datos[0]['independent'];
-    dominio = datos[0]['tld'][0];
+    esIndependiente = datos['independent'];
+    dominio = datos['tld'][0];
   }
 
   obtenerPais(String nombre) async {
@@ -52,7 +49,7 @@ class Pais {
     try {
       if (respuesta.statusCode == 200) {
         var body = json.decode(respuesta.body);
-        Pais pais = Pais.fromAPI(body);
+        Pais pais = Pais.fromAPI(body[0]);
         return pais;
       } else if (respuesta.statusCode == 404) {
         throw ("El país no existe, Intentalo de nuevo en Inglés");
@@ -102,10 +99,6 @@ class Pais {
     stdout.writeln('-------------------------------');
   }
 
-  mostrarMoneda() {
-    stdout.writeln("MONEDA: $moneda");
-  }
-
   mostrarIndependiente() {
     stdout.writeln(
         'Es independiente: ${esIndependiente == true ? 'Es independiente' : 'No es independiente'}');
@@ -115,31 +108,6 @@ class Pais {
     stdout.writeln('DOMINIO: $dominio');
   }
 
-adivinarCapital() async {
-  int aciertos = 0;
-  int intentos = 1;
-
-  do {
-    Pais pais = await obtenerPaisRandom();
-    stdout.writeln('¿Cuál es la capital de ');
-    // Obtener un país aleatorio
-    stdout.writeln(pais.nombre + '?');
-    // Leer la respuesta del usuario
-    String respuesta = stdin.readLineSync() ?? '';
-    // Verificar si la respuesta es correcta
-    if (respuesta.toLowerCase() == pais.capital?.toLowerCase()) {
-      stdout.writeln('¡Respuesta correcta!');
-      aciertos++;
-    } else {
-      stdout.writeln('Respuesta incorrecta. La capital es ${pais.capital}');
-      intentos++;
-    }
-  } while (intentos <= 3);
-  stdout.writeln('Aciertos: $aciertos');
-}
-
-
-//TODO JUEGO DE ADIVINAR CAPITALES
   obtenerPaisRandom() async {
     Uri url = Uri.parse("https://restcountries.com/v3.1/all");
     var respuesta = await http.get(url);
@@ -149,7 +117,6 @@ adivinarCapital() async {
         int paisRandom = Random().nextInt(body.length);
         Pais pais = Pais.fromAPI(body[paisRandom]);
         return pais;
-
       } else if (respuesta.statusCode == 404) {
         throw ("El país no existe, Intentalo de nuevo en Inglés");
       } else {
@@ -158,5 +125,28 @@ adivinarCapital() async {
     } catch (e) {
       stdout.writeln(e);
     }
+  }
+
+  adivinarCapital() async {
+    int aciertos = 0;
+    int intentos = 1;
+
+    do {
+      Pais pais = await obtenerPaisRandom();
+      String? nombre = pais.nombre;
+      String? capital = pais.capital;
+      stdout.writeln('¿Cuál es la capital de $nombre ?');
+      // Leer la respuesta del usuario
+      String respuesta = stdin.readLineSync() ?? '';
+      // Verificar si la respuesta es correcta
+      if (respuesta.toLowerCase() == capital?.toLowerCase()) {
+        stdout.writeln('¡Respuesta correcta!');
+        aciertos++;
+      } else {
+        stdout.writeln('Respuesta incorrecta.');
+        intentos++;
+      }
+    } while (intentos <= 3);
+    stdout.writeln('Aciertos: $aciertos');
   }
 }
