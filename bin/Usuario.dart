@@ -65,6 +65,4 @@ class Usuario {
       await conn.close();
     }
   }
-
-  //Usuario nombre
 }

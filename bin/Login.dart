@@ -40,7 +40,7 @@ class Login {
     Usuario usuario = Usuario();
     stdout.writeln('''
 ----------------------------------------------
-|                   LOGIN                     |
+|                   LOGIN                    |
 ----------------------------------------------
 ''');
     stdout.writeln('USUARIO: ');

@@ -71,7 +71,7 @@ class App {
 |    Elige una de las siguientes opciones:     |
 |      1 - Información general.                |
 |      2 - Información extra.                  |
-|      3 - Juego adivinar el país              |
+|      3 - Juego adivinar la capital           |
 |      4 - Salir                               |
 -----------------------------------------------
    ''');
