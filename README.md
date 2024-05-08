@@ -25,5 +25,4 @@
 
     - C Juego de adivinar la capital
     1. Te ofrece el país
-
-    - D Juego de adivinar el país según la población
+    2. Te muestra el ranking
