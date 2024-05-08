@@ -52,7 +52,7 @@ class App {
   String pedirNombre() {
     stdout.writeln('''
 ----------------------------------------------
-          Nombre país a consultar:
+|    Nombre país a consultar (en inglés):     |
 ----------------------------------------------
 ''');
     return stdin.readLineSync() ?? "error";
@@ -64,19 +64,17 @@ class App {
     int? opcion;
     do {
       stdout.writeln('''
-----------------------------------------------
-              INFORMACIÓN PAISES
-----------------------------------------------    
-
-    Elige una de las siguientes opciones:
-      1 - Información general.
-      2 - Información extra.
-      3 - Juego adivinar el país
-      4 - Salir
-----------------------------------------------
-
-----------------------------------------------      
-    ''');
+------------------------------------------------
+|              INFORMACIÓN PAISES              |
+|----------------------------------------------|    
+|                                              |
+|    Elige una de las siguientes opciones:     |
+|      1 - Información general.                |
+|      2 - Información extra.                  |
+|      3 - Juego adivinar el país              |
+|      4 - Salir                               |
+-----------------------------------------------
+   ''');
       opcion = int.tryParse(stdin.readLineSync() ?? 'e');
     } while (opcion == null);
     return opcion;
@@ -91,14 +89,15 @@ class App {
       if (mostrarMenu) {
         stdout.writeln('''
     ------------------------------
-      2 INFORMACION EXTRA: ${paisSeleccionado?.nombre}
-    ------------------------------
-      1. Nombre Oficial
-      2. Siglas FIFA
-      3. Zona horaria
-      4. Dominio
-      5. ¿Es independiente?
-      6. Salir
+    |  2 INFORMACION EXTRA: ${paisSeleccionado?.nombre}|
+    |---------------------------|
+    |  1. Nombre Oficial        |
+    |  2. Siglas FIFA           |
+    |  3. Zona horaria          |
+    |  4. Dominio               |
+    |  5. ¿Es independiente?    |
+    |  6. Salir                 |
+    -----------------------------
 ''');
       }
 
@@ -136,6 +135,7 @@ class App {
       }
     } while (opcion != 6);
   }
+
   //TODO Método para obtener la información del país.
   informacion() async {
     String respuesta = pedirNombre();
@@ -169,47 +169,47 @@ class App {
     int? opcion;
     stdout.writeln('''
     ------------------------------
-        3. ADIVINA LA CAPITAL
-    ------------------------------
-        1. Jugar.
-        2. Ranking de jugadores.
-        3. Salir
+    |    3. ADIVINA LA CAPITAL    |
+    |-----------------------------|
+    |    1. Jugar.                |
+    |    2. Ranking de jugadores. |
+    |    3. Salir                 |
+    -------------------------------
 ''');
     opcion = int.tryParse(stdin.readLineSync() ?? 'e');
-    switch (opcion) {
-      case 1:
-        //Juego
-        String nombreUsuario = await Login().nombreJugador();
-        await Pais().adivinarCapital(nombreUsuario);
-        break;
+      switch (opcion) {
+        case 1:
+          //Juego
+          String nombreUsuario = await Login().nombreJugador();
+          await Pais().adivinarCapital(nombreUsuario);
+          break;
 
-      case 2:
-        var resultados = await Resultado.named().obtenerResultados();
-        stdout.writeln('''
-        ------------------------------
-             RANKING DE JUGADORES
-        ------------------------------
+        case 2:
+          var resultados = await Resultado.named().obtenerResultados();
+          stdout.writeln('''
+        ------------------------------------
+        |    RANKING DE JUGADORES TOP 5:   |
+        ------------------------------------
 ''');
-        if (resultados.isNotEmpty) {
-          for (var i = 0; i < resultados.length; i++) {
-            var resultado = resultados[i];
-            stdout.writeln(
-                '''         ${i + 1}: ${resultado['alias']}|${resultado['puntuacion']}|
+          if (resultados.isNotEmpty) {
+            for (var i = 0; i < resultados.length; i++) {
+              var resultado = resultados[i];
+              stdout.writeln(
+                  '''         ${i + 1}: ${resultado['alias']}|${resultado['puntuacion']}|
                     ''');
+            }
+            stdout.writeln('        ------------------------------------');
+          } else {
+            stdout.writeln('No hay resultados disponibles');
           }
-          stdout.writeln('        ------------------------------------');
-        } else {
-          stdout.writeln('No hay resultados disponibles');
-        }
-        break;
+          break;
 
-      case 3:
-        stdout.writeln('Saliendo del juego...');
-        exit(0);
+        case 3:
+          stdout.writeln('Saliendo del juego...');
+          exit(0);
 
-      default:
-        stdout.writeln('Opción no válida');
-    }
-    adivinarCapitalJuego();
+        default:
+          stdout.writeln('Opción no válida');
+      }
   }
 }

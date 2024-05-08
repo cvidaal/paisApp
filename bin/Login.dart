@@ -40,7 +40,7 @@ class Login {
     Usuario usuario = Usuario();
     stdout.writeln('''
 ----------------------------------------------
-                   LOGIN
+|                   LOGIN                     |
 ----------------------------------------------
 ''');
     stdout.writeln('USUARIO: ');
@@ -60,7 +60,7 @@ class Login {
     Usuario usuario = Usuario();
     stdout.writeln('''
 ----------------------------------------------
-                  REGISTRO
+|                  REGISTRO                   |
 ----------------------------------------------
 ''');
     stdout.writeln('NOMBRE USUARIO:');
@@ -75,7 +75,7 @@ class Login {
     Usuario usuario = Usuario();
     stdout.writeln('''
 ----------------------------------------------
-            ALIAS PARA JUGAR:
+|            ALIAS PARA JUGAR:               |
 ----------------------------------------------
 ''');
     usuario.alias = stdin.readLineSync();
