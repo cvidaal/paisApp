@@ -1,41 +1,48 @@
 import 'dart:io';
+import 'Login.dart';
+import 'Resultado.dart';
 import 'pais.dart';
 
 class App {
   Pais? paisSeleccionado; //Objeto de tipo pais.
 
   inicioApp() async {
-    int? seleccion = menuLogueado();
+    do {
+      int? seleccion = menuLogueado();
 
-    switch (seleccion) {
-      case 1:
-        informacion();
-        break;
-      case 2:
-        seleccionarPais();
-        break;
-      //Información extra
-      case 3:
-        Pais().adivinarCapital();
-        //Juego adivinar el país
-        break;
-      case 4:
-        exit(0);
-      //Switch interno
-    }
+      switch (seleccion) {
+        case 1:
+          await informacion();
+          break;
+        case 2:
+          await seleccionarPais();
+          break;
+        //Información extra
+        case 3:
+          await adivinarCapitalJuego();
+        //Juego adivinar capital
+
+        case 4:
+          stdout.writeln('Gracias por usar la aplicación...');
+          exit(0);
+        //Switch interno
+        default:
+          stdout.writeln('Opción no válida');
+      }
+    } while (true);
   }
 
   //TODO METODO PARA SELECCIONAR EL PAIS, QUE PIDE EL NOMBRE.
-  void seleccionarPais() {
+  seleccionarPais() async {
     String respuesta = pedirNombre();
-    obtenerInformacion(respuesta);
+    await obtenerInformacion(respuesta);
   }
 
   //TODO METODO PARA OBTENER LA INFORMACIÓN DEL PAÍS Y MOSTRAR LA INFORMACIÓN EXTRA EN CASO DE QUE SEA NULL.
   obtenerInformacion(String nombre) async {
     paisSeleccionado = await Pais().obtenerPais(nombre);
     if (paisSeleccionado != null) {
-      menuExtra(); // Llamar al menú extra después de seleccionar el país
+      await menuExtra(); // Llamar al menú extra después de seleccionar el país
     } else {
       stdout.writeln('El país no pudo ser encontrado. Inténtalo de nuevo.');
     }
@@ -52,6 +59,7 @@ class App {
   }
 
   //TODO  MENU QUE SE MUESTRA CUANDO ESTAS LOGUEADO
+
   int? menuLogueado() {
     int? opcion;
     do {
@@ -78,8 +86,10 @@ class App {
 
   menuExtra() async {
     int? opcion;
+    bool mostrarMenu = true;
     do {
-      stdout.writeln('''
+      if (mostrarMenu) {
+        stdout.writeln('''
     ------------------------------
       2 INFORMACION EXTRA: ${paisSeleccionado?.nombre}
     ------------------------------
@@ -90,35 +100,43 @@ class App {
       5. ¿Es independiente?
       6. Salir
 ''');
+      }
+
       opcion = int.tryParse(stdin.readLineSync() ?? 'e');
       switch (opcion) {
         case 1:
           nombreExtra();
+          mostrarMenu = false;
           break;
         case 2:
           siglasFifa();
+          mostrarMenu = false;
           // SIGLAS FIFA
           break;
         case 3:
           zonaHoraria();
+          mostrarMenu = false;
           // ZONA HORARIA
           break;
         case 4:
           dominio();
+          mostrarMenu = false;
           // DOMINIO
           break;
         case 5:
           independiente();
+          mostrarMenu = false;
           // ES INDEPENDIENTE?
           break;
         case 6:
+          stdout.writeln('Saliendo del menu...');
           break; // Salir del menú extra
         default:
           stdout.writeln('Opción inválida.');
       }
     } while (opcion != 6);
   }
-
+  //TODO Método para obtener la información del país.
   informacion() async {
     String respuesta = pedirNombre();
     paisSeleccionado = await Pais().obtenerPais(respuesta);
@@ -137,15 +155,61 @@ class App {
     paisSeleccionado?.mostrarZonaHoraria();
   }
 
-  // moneda() {
-  //   paisSeleccionado?.mostrarMoneda();
-  // }
-
   independiente() {
     paisSeleccionado?.mostrarIndependiente();
   }
 
   dominio() {
     paisSeleccionado?.mostrarDominio();
+  }
+
+//TODO Método para el juego de adivinar capital
+
+  adivinarCapitalJuego() async {
+    int? opcion;
+    stdout.writeln('''
+    ------------------------------
+        3. ADIVINA LA CAPITAL
+    ------------------------------
+        1. Jugar.
+        2. Ranking de jugadores.
+        3. Salir
+''');
+    opcion = int.tryParse(stdin.readLineSync() ?? 'e');
+    switch (opcion) {
+      case 1:
+        //Juego
+        String nombreUsuario = await Login().nombreJugador();
+        await Pais().adivinarCapital(nombreUsuario);
+        break;
+
+      case 2:
+        var resultados = await Resultado.named().obtenerResultados();
+        stdout.writeln('''
+        ------------------------------
+             RANKING DE JUGADORES
+        ------------------------------
+''');
+        if (resultados.isNotEmpty) {
+          for (var i = 0; i < resultados.length; i++) {
+            var resultado = resultados[i];
+            stdout.writeln(
+                '''         ${i + 1}: ${resultado['alias']}|${resultado['puntuacion']}|
+                    ''');
+          }
+          stdout.writeln('        ------------------------------------');
+        } else {
+          stdout.writeln('No hay resultados disponibles');
+        }
+        break;
+
+      case 3:
+        stdout.writeln('Saliendo del juego...');
+        exit(0);
+
+      default:
+        stdout.writeln('Opción no válida');
+    }
+    adivinarCapitalJuego();
   }
 }

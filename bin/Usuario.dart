@@ -6,6 +6,7 @@ class Usuario {
   int? _idusuario;
   String? _nombre;
   String? _password;
+  String? alias;
 
   //GET AND SET
   get idusuario => _idusuario;
@@ -64,4 +65,6 @@ class Usuario {
       await conn.close();
     }
   }
+
+  //Usuario nombre
 }

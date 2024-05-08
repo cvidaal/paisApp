@@ -23,9 +23,7 @@
     5. Dirección de conducción de los coches
     6. ¿Es independiente?
 
-    - C Juego de adivinar el país 
-    1. Te ofrece la capital
-    2. El continente.
-    3. La bandera
+    - C Juego de adivinar la capital
+    1. Te ofrece el país
 
     - D Juego de adivinar el país según la población

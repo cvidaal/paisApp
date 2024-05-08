@@ -3,6 +3,8 @@ import "dart:io";
 import "dart:math";
 import "package:http/http.dart" as http;
 
+import "Resultado.dart";
+
 class Pais {
   String nombre = "Pepe";
   String? capital;
@@ -102,10 +104,12 @@ class Pais {
   mostrarIndependiente() {
     stdout.writeln(
         'Es independiente: ${esIndependiente == true ? 'Es independiente' : 'No es independiente'}');
+    stdout.writeln('-------------------------------');
   }
 
   mostrarDominio() {
     stdout.writeln('DOMINIO: $dominio');
+    stdout.writeln('-------------------------------');
   }
 
   obtenerPaisRandom() async {
@@ -127,18 +131,16 @@ class Pais {
     }
   }
 
-  adivinarCapital() async {
+  adivinarCapital(String nombreUsuario) async {
     int aciertos = 0;
     int intentos = 1;
 
     do {
       Pais pais = await obtenerPaisRandom();
-      String? nombre = pais.nombre;
+      String? nombrePais = pais.nombre;
       String? capital = pais.capital;
-      stdout.writeln('¿Cuál es la capital de $nombre ?');
-      // Leer la respuesta del usuario
+      stdout.writeln('¿Cuál es la capital de $nombrePais ?');
       String respuesta = stdin.readLineSync() ?? '';
-      // Verificar si la respuesta es correcta
       if (respuesta.toLowerCase() == capital?.toLowerCase()) {
         stdout.writeln('¡Respuesta correcta!');
         aciertos++;
@@ -148,5 +150,11 @@ class Pais {
       }
     } while (intentos <= 3);
     stdout.writeln('Aciertos: $aciertos');
+
+    // Crear una instancia de Resultado con el alias y la puntuación
+    Resultado resultado = Resultado(nombreUsuario, aciertos);
+
+    // Insertar los resultados en la base de datos
+    await resultado.insertarResultados();
   }
 }

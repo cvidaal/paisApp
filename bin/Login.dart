@@ -9,13 +9,13 @@ class Login {
     //! PEDIR AL USUARIO SI QUIERE REGISTRARSE, INICIAR SESIÓN
     do {
       stdout.writeln('''
-----------------------------------------------
-          Elige una opción:
-----------------------------------------------
-          1 - INICIAR SESIÓN
-
-          2 - REGISTRARSE
-----------------------------------------------
+    ------------------------------------------
+    |          Elige una opción:             |
+    ------------------------------------------
+    |          1 - INICIAR SESIÓN            |
+    |                                        |
+    |          2 - REGISTRARSE               |
+    ------------------------------------------
       ''');
       String respuesta = stdin.readLineSync() ?? 'e';
       opcion = int.tryParse(respuesta);
@@ -69,5 +69,16 @@ class Login {
     usuario.password = stdin.readLineSync();
     await usuario.insertarUsuarios();
     menuLogin();
+  }
+
+  nombreJugador() async {
+    Usuario usuario = Usuario();
+    stdout.writeln('''
+----------------------------------------------
+            ALIAS PARA JUGAR:
+----------------------------------------------
+''');
+    usuario.alias = stdin.readLineSync();
+    return usuario.alias;
   }
 }
